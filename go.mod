@@ -12,6 +12,7 @@ require (
 	github.com/streadway/amqp v0.0.0-20200108173154-1c71cc93ed71
 	go.uber.org/zap v1.14.1
 	google.golang.org/grpc v1.29.0
+	gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2
 	gopkg.in/ldap.v2 v2.5.1
 	k8s.io/api v0.18.2
