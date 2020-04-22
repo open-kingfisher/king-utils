@@ -19,4 +19,3 @@ require (
 	k8s.io/client-go v11.0.0+incompatible
 	k8s.io/metrics v0.18.2
 )
-replace github.com/open-kingfisher/king-utils => ../king-utils
