@@ -15,6 +15,7 @@ type MQHandler interface {
 
 type UpdateKubeConfig struct{}
 
+// 只要实现HandleMessage方法既可以实现Handler接口
 func (u *UpdateKubeConfig) HandleMessage(m *amqp.Delivery) error {
 	if len(m.Body) == 0 {
 		return nil
