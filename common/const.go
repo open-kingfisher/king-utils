@@ -134,7 +134,7 @@ const (
 	KingKf           = "king-kf:50000"
 	KubectlNamespace = "default"
 
-	// NSQ Topic
+	// MQ Topic
 	UpdateKubeConfig = "Update-Kube-Config"
 )
 
