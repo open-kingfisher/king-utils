@@ -75,6 +75,7 @@ func (lc *LDAPClient) Close() {
 func (lc *LDAPClient) Authenticate(username, password string) (bool, map[string]string, error) {
 	err := lc.Connect()
 	if err != nil {
+		fmt.Println(err)
 		return false, nil, err
 	}
 
@@ -102,11 +103,11 @@ func (lc *LDAPClient) Authenticate(username, password string) (bool, map[string]
 	}
 
 	if len(sr.Entries) < 1 {
-		return false, nil, errors.New("User does not exist")
+		return false, nil, errors.New("user does not exist")
 	}
 
 	if len(sr.Entries) > 1 {
-		return false, nil, errors.New("Too many entries returned")
+		return false, nil, errors.New("too many entries returned")
 	}
 
 	userDN := sr.Entries[0].DN
