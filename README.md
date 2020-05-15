@@ -8,3 +8,5 @@ Kingfisher系统中多个项目使用的公共库
 
 - Golang： `Go >= 1.13`
 
+## 联系我们
+- [交流群](https://github.com/open-kingfisher/community/blob/master/contact_us/README.md)
