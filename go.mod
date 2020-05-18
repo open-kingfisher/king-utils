@@ -13,10 +13,10 @@ require (
 	go.uber.org/zap v1.14.1
 	google.golang.org/grpc v1.29.0
 	gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d // indirect
-	gopkg.in/ldap.v2 v2.5.1
 	k8s.io/api v0.18.2
 	k8s.io/client-go v0.18.2
 	k8s.io/metrics v0.18.2
+	github.com/go-ldap/ldap v3.0.3+incompatible
 )
 
 replace (
