@@ -4,8 +4,8 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
-
-	"gopkg.in/ldap.v2"
+	"github.com/go-ldap/ldap"
+	"github.com/open-kingfisher/king-utils/common/log"
 )
 
 type LDAPClient struct {
@@ -20,39 +20,25 @@ type LDAPClient struct {
 	Conn               *ldap.Conn
 	Port               int
 	InsecureSkipVerify bool
-	UseSSL             bool
-	SkipTLS            bool
+	UseTLS             bool
+	SkipTLSVerify      bool
 	ClientCertificates []tls.Certificate // Adding client certificates
 }
 
-// Connect connects to the ldap backend.
+// 连接LDAP服务
 func (lc *LDAPClient) Connect() error {
 	if lc.Conn == nil {
 		var l *ldap.Conn
 		var err error
-		address := fmt.Sprintf("%s:%d", lc.Host, lc.Port)
-		if !lc.UseSSL {
-			l, err = ldap.Dial("tcp", address)
-			if err != nil {
-				return err
-			}
+		address := fmt.Sprintf("ldap://%s:%d", lc.Host, lc.Port)
 
-			// Reconnect with TLS
-			if !lc.SkipTLS {
-				err = l.StartTLS(&tls.Config{InsecureSkipVerify: true})
-				if err != nil {
-					return err
-				}
-			}
-		} else {
-			config := &tls.Config{
-				InsecureSkipVerify: lc.InsecureSkipVerify,
-				ServerName:         lc.ServerName,
-			}
-			if lc.ClientCertificates != nil && len(lc.ClientCertificates) > 0 {
-				config.Certificates = lc.ClientCertificates
-			}
-			l, err = ldap.DialTLS("tcp", address, config)
+		l, err = ldap.DialURL(address)
+		if err != nil {
+			return err
+		}
+		if lc.UseTLS {
+			// 带TLS的连接
+			err = l.StartTLS(&tls.Config{InsecureSkipVerify: true})
 			if err != nil {
 				return err
 			}
@@ -63,7 +49,7 @@ func (lc *LDAPClient) Connect() error {
 	return nil
 }
 
-// Close closes the ldap backend connection.
+// 关闭连接
 func (lc *LDAPClient) Close() {
 	if lc.Conn != nil {
 		lc.Conn.Close()
@@ -71,37 +57,33 @@ func (lc *LDAPClient) Close() {
 	}
 }
 
-// Authenticate authenticates the user against the ldap backend.
+// 认证
 func (lc *LDAPClient) Authenticate(username, password string) (bool, map[string]string, error) {
 	err := lc.Connect()
 	if err != nil {
-		fmt.Println(err)
 		return false, nil, err
 	}
-
-	// First bind with a read only user
+	// 绑定查询用户
 	if lc.BindDN != "" && lc.BindPassword != "" {
 		err := lc.Conn.Bind(lc.BindDN, lc.BindPassword)
 		if err != nil {
+			log.Errorf("ldap bind dn:%s password:%s error: %s", lc.BindDN, lc.BindPassword, err)
 			return false, nil, err
 		}
 	}
-
-	attributes := append(lc.Attributes, "dn")
-	// Search for the given username
+	// 搜索指定用户
 	searchRequest := ldap.NewSearchRequest(
 		lc.Base,
 		ldap.ScopeWholeSubtree, ldap.NeverDerefAliases, 0, 0, false,
 		fmt.Sprintf(lc.UserFilter, username),
-		attributes,
+		lc.Attributes,
 		nil,
 	)
-
 	sr, err := lc.Conn.Search(searchRequest)
 	if err != nil {
+		log.Errorf("ldap search username:%s, userFilter:%s, error: %s", lc.UserFilter, username, err)
 		return false, nil, err
 	}
-
 	if len(sr.Entries) < 1 {
 		return false, nil, errors.New("user does not exist")
 	}
@@ -115,14 +97,14 @@ func (lc *LDAPClient) Authenticate(username, password string) (bool, map[string]
 	for _, attr := range lc.Attributes {
 		user[attr] = sr.Entries[0].GetAttributeValue(attr)
 	}
-
-	// Bind as the user to verify their password
+	// 验证用户命名密码
 	err = lc.Conn.Bind(userDN, password)
 	if err != nil {
+		log.Errorf("ldap bind userDN:%s, error: %s", userDN)
 		return false, user, err
 	}
 
-	// Rebind as the read only user for any further queries
+	// 重新绑定查询用户
 	if lc.BindDN != "" && lc.BindPassword != "" {
 		err = lc.Conn.Bind(lc.BindDN, lc.BindPassword)
 		if err != nil {
