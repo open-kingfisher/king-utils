@@ -61,6 +61,7 @@ const (
 	PlatformRole       = "platform_role"
 	ClusterPlugin      = "cluster_plugin"
 	Template           = "template"
+	Config             = "config"
 
 	// 数据库表
 	DataField          = "data"
@@ -76,6 +77,7 @@ const (
 	ClusterPluginTable = "cluster_plugin"
 	PlatformRoleTable  = "platform_role"
 	TemplateTable      = "template"
+	ConfigTable        = "config"
 
 	// 操作类型
 	Create                   = ActionType("create")
@@ -352,4 +354,21 @@ type TemplateDB struct {
 	Spec       interface{} `json:"spec"`
 	CreateTime int64       `json:"createTime"`
 	ModifyTime int64       `json:"modifyTime"`
+}
+
+type LDAPDB struct {
+	Mode           string `json:"mode"`
+	URL            string `json:"url"`
+	SearchDN       string `json:"searchDN"`
+	SearchPassword string `json:"searchPassword"`
+	UserFilter     string `json:"userFilter"`
+	TLS            int64  `json:"tls"`
+	Attributes     string `json:"attributes"`
+}
+
+type ConfigDB struct {
+	Id         string `json:"id"`
+	LDAPDB     LDAPDB `json:"ldap"`
+	CreateTime int64  `json:"createTime"`
+	ModifyTime int64  `json:"modifyTime"`
 }
