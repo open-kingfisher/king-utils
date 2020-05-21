@@ -138,6 +138,8 @@ const (
 
 	// MQ Topic
 	UpdateKubeConfig = "Update-Kube-Config"
+
+	ConfigID = "c_000000000001"
 )
 
 type ResponseData struct {
@@ -361,8 +363,9 @@ type LDAPDB struct {
 	URL            string `json:"url"`
 	SearchDN       string `json:"searchDN"`
 	SearchPassword string `json:"searchPassword"`
+	BaseDN         string `json:"baseDN"`
 	UserFilter     string `json:"userFilter"`
-	TLS            int64  `json:"tls"`
+	TLS            bool   `json:"tls"`
 	Attributes     string `json:"attributes"`
 }
 
