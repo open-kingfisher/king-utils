@@ -9,20 +9,19 @@ import (
 )
 
 type LDAPClient struct {
+	URL                string
 	Attributes         []string
 	Base               string
 	BindDN             string
 	BindPassword       string
 	GroupFilter        string
-	Host               string
 	ServerName         string
 	UserFilter         string
 	Conn               *ldap.Conn
-	Port               int
 	InsecureSkipVerify bool
 	UseTLS             bool
 	SkipTLSVerify      bool
-	ClientCertificates []tls.Certificate // Adding client certificates
+	ClientCertificates []tls.Certificate
 }
 
 // 连接LDAP服务
@@ -30,9 +29,8 @@ func (lc *LDAPClient) Connect() error {
 	if lc.Conn == nil {
 		var l *ldap.Conn
 		var err error
-		address := fmt.Sprintf("ldap://%s:%d", lc.Host, lc.Port)
 
-		l, err = ldap.DialURL(address)
+		l, err = ldap.DialURL(lc.URL)
 		if err != nil {
 			return err
 		}

@@ -1,15 +1,16 @@
 package kit
 
-func LdapLookup() *LDAPClient {
+import "fmt"
+
+func LdapLookup(url, bindDN, bindPassword, baseDN, userFilter string, tls bool) *LDAPClient {
 	client := &LDAPClient{
-		Base:         "dc=kingfisher,dc=com",
-		Host:         "ldap.kingfisher.com",
-		Port:         389,
-		UseTLS:       false, // TLS认证
-		BindDN:       "cn=admin,dc=kingfisher,dc=com",
-		BindPassword: "kingfisher",
-		UserFilter:   "(cn=%s)",
-		Attributes:   []string{"cn", "mail"},
+		URL:          url,
+		Base:         baseDN,
+		UseTLS:       tls, // TLS认证
+		BindDN:       bindDN,
+		BindPassword: bindPassword,
+		UserFilter:   fmt.Sprintf("(%s=%%s)", userFilter),
+		Attributes:   []string{},
 	}
 	return client
 }
