@@ -261,6 +261,7 @@ type User struct {
 	Cluster    []string `json:"cluster"`
 	Namespace  []string `json:"namespace"`
 	Role       string   `json:"role"`
+	Password   string   `json:"password"`
 	CreateTime int64    `json:"createTime"`
 	ModifyTime int64    `json:"modifyTime"`
 }
