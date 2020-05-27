@@ -65,7 +65,6 @@ const (
 
 	// 数据库表
 	DataField          = "data"
-	ProductTreeTable   = "product_tree"
 	ProductTable       = "product"
 	AuditLogTable      = "audit_log"
 	ClusterTable       = "cluster"
@@ -206,18 +205,6 @@ type ImageTags struct {
 	Author        string      `json:"author"`
 	Created       interface{} `json:"created"`
 	Config        interface{} `json:"config"`
-}
-
-type ProductTree struct {
-	Id            string `json:"id"`
-	Uuid          string `json:"uuid"`
-	Name          string `json:"name"`
-	Lev           string `json:"lev"`
-	TechLeader    string `json:"tech_leader"`
-	ProductLeader string `json:"product_leader"`
-	VicePresident string `json:"vice_president"`
-	Status        string `json:"status"`
-	IsPlatform    string `json:"is_platform"`
 }
 
 type ActionType string
