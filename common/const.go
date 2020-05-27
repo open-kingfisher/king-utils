@@ -290,7 +290,8 @@ type InfoType struct {
 }
 
 type ProductDB struct {
-	Id         string   `json:"id" binding:"required,requiredValidate"`
+	Id         string   `json:"id"`
+	Name       string   `json:"name"`
 	Cluster    []string `json:"cluster"`
 	Namespace  []string `json:"namespace"`
 	CreateTime int64    `json:"createTime"`
