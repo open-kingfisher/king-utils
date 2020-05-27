@@ -186,10 +186,17 @@ func Update(table, id string, newObj interface{}) error {
 		return err
 	}
 
-	if err := UpdateTx(tx, table, id, newObj); err != nil {
-		tx.Rollback()
+	//if err := UpdateTx(tx, table, id, newObj); err != nil {
+	//	tx.Rollback()
+	//	return err
+	//}
+	strValue, err := ToJSON(newObj)
+	if err != nil {
 		return err
 	}
+	updateSql := fmt.Sprintf("UPDATE %s SET data='%s' WHERE data -> '$.id'='%s'", table, strValue, id)
+	fmt.Println(updateSql)
+	_, err = tx.Exec(updateSql)
 
 	if err := tx.Commit(); err != nil {
 		tx.Rollback()
