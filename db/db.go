@@ -195,7 +195,6 @@ func Update(table, id string, newObj interface{}) error {
 		return err
 	}
 	updateSql := fmt.Sprintf("UPDATE %s SET data='%s' WHERE data -> '$.id'='%s'", table, strValue, id)
-	fmt.Println(updateSql)
 	_, err = tx.Exec(updateSql)
 
 	if err := tx.Commit(); err != nil {
