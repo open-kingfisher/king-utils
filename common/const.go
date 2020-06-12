@@ -34,6 +34,7 @@ const (
 	ConfigMap          = "config_map"
 	Ingress            = "ingress"
 	Role               = "Role"
+	Endpoint           = "endpoint"
 	ClusterRole        = "cluster_role"
 	RoleBinding        = "role_binding"
 	ClusterRoleBinding = "cluster_role_binding"
