@@ -83,6 +83,7 @@ const (
 	Create                   = ActionType("create")
 	Delete                   = ActionType("delete")
 	Start                    = ActionType("start")
+	Restart                  = ActionType("restart")
 	Patch                    = ActionType("patch")
 	Scale                    = ActionType("scale")
 	PatchImage               = ActionType("patch_image")
