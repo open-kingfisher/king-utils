@@ -19,7 +19,7 @@ func init() {
 	cmd := flag.NewFlagSet("", flag.ContinueOnError)
 	cmd.StringVar(&Listen, "listen", "0.0.0.0:8080", "Host Listen")
 	cmd.StringVar(&Mode, "mode", "release", "Set Mode, Options: [debug|release|test]")
-	cmd.StringVar(&DBURL, "dbURL", "root:password@tcp(10.10.10.10:3306)/kingfisher", "DB URL")
+	cmd.StringVar(&DBURL, "dbURL", "root:kingfisher@tcp(10.211.103.170:3306)/kingfisher", "DB URL")
 	cmd.StringVar(&HarborURL, "harborURL", "admin:passowrd@registry.kingfihser.com", "Harbor URL")
 	cmd.StringVar(&RabbitMQURL, "rabbitMQURL", "amqp://kingfisher:kingfisher@localhost:5672/", "RabbitMQ URL")
 	cmd.BoolVar(&isHelp, "help", false, "Print this help")
