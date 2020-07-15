@@ -109,6 +109,8 @@ const (
 	GetNamespaceIsExistLabel = ActionType("get_namespace_is_exist_label")
 	Debug                    = ActionType("debug")
 	Rescue                   = ActionType("rescue")
+	Offline                  = ActionType("offline")
+	Online                   = ActionType("online")
 	Kubectl                  = ActionType("Kubectl")
 	UnKubectl                = ActionType("unkubectl")
 	Status                   = ActionType("status")
